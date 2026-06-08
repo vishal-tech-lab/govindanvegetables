@@ -91,7 +91,7 @@ function Auth() {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://saas-pos-backend-m8et.onrender.com/auth/login", {
+      const res = await fetch("https://govindanvegetables-backend.onrender.com/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),
@@ -178,7 +178,7 @@ function Auth() {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://saas-pos-backend-m8et.onrender.com/register", {
+      const res = await fetch("https://govindanvegetables-backend.onrender.com/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(registerData),

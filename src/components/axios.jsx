@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const insatnces = axios.create({
-    baseURL: "https://saas-pos-backend-m8et.onrender.com",
+    baseURL: "https://govindanvegetables-backend.onrender.com",
 });
 
 export default insatnces;
