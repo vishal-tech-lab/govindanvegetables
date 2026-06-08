@@ -9,6 +9,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import instances from "../../../components/axios";
+import { handleEnterNavigation } from "../../../utils/formNavigation";
 
 function Customerregister() {
   const [name, setName] = useState("");
@@ -173,6 +174,7 @@ function Customerregister() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onSubmit={handleSubmit}
+                  onKeyDown={handleEnterNavigation}
                   className="space-y-5"
                 >
                   {/* Customer Name */}

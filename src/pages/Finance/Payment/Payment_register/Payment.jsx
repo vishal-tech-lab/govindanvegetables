@@ -3,6 +3,7 @@ import Customerdropdown from "../../../../components/Customerdropdown";
 import insatnces from "../../../../components/axios";
 import "./Payment.css";
 import useDashboardData from "../../../../components/DashboardWidget";
+import { handleEnterNavigation } from "../../../../utils/formNavigation";
 
 function Payment() {
   const [date, setDate] = useState("");
@@ -69,7 +70,7 @@ function Payment() {
   };
 
   return (
-    <div className="payment-container">
+    <form onKeyDown={handleEnterNavigation} onSubmit={(e) => { e.preventDefault(); handlesubmit(); }} className="payment-container">
       <h2>💰 Customer Payment</h2>
 
       <label className="custom-label">📅 Date</label>
@@ -106,10 +107,10 @@ function Payment() {
         </h2>
       )}
 
-      <button type="submit" onClick={handlesubmit} className="custom-button">
+      <button type="submit" className="custom-button">
         Submit
       </button>
-    </div>
+    </form>
   );
 }
 

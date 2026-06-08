@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent } from '../../../components/ui/card';
 import instances from '../../../components/axios';
+import { handleEnterNavigation } from '../../../utils/formNavigation';
 
 function Expenseregister() {
   const [expense, setExpense] = useState({
@@ -324,6 +325,7 @@ function Expenseregister() {
             </div>
           </div>
 
+          <form onKeyDown={handleEnterNavigation}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-slate-600 flex items-center">
@@ -572,6 +574,7 @@ function Expenseregister() {
               <span>{editindex !== null ? "Update Expense" : "Add Expense"}</span>
             </motion.button>
           </div>
+          </form>
         </motion.div>
 
         {allexpense.length > 0 && (

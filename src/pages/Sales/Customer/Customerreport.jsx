@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import instances from '../../../components/axios';
+import { handleEnterNavigation } from '../../../utils/formNavigation';
 import ReportPreviewModal from "../../../components/report/ReportPreviewModal";
 import ReportLayout from "../../../components/report/ReportLayout";
 

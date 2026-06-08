@@ -6,6 +6,7 @@ import ReportLayout from "../../../../components/report/ReportLayout";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Users, Eye, Filter, Search, X, Receipt } from "lucide-react";
 import Customerdropdown from "../../../../components/Customerdropdown";
+import { handleEnterNavigation } from "../../../../utils/formNavigation";
 
 function PaymentReport() {
   const [payments, setPayments] = useState([]);
@@ -164,6 +165,7 @@ useEffect(() => {
             </button>
           </div>
 
+          <form onKeyDown={handleEnterNavigation}>
           <div className="px-4 py-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-3">
               <label className="text-xs font-semibold text-slate-600 flex items-center gap-1">
@@ -234,6 +236,7 @@ useEffect(() => {
               </div>
             </div>
           )}
+          </form>
         </motion.div>
 
         <motion.div

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Package, CheckCircle, AlertCircle, Leaf } from 'lucide-react';
 import insatnces from '../../../components/axios';
-
+import { handleEnterNavigation } from '../../../utils/formNavigation';
 function ItemRegister({ onClose }) {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -14,7 +14,8 @@ function ItemRegister({ onClose }) {
   // --- PROFESSIONAL NOTIFICATION STATE ---
   const [toast, setToast] = useState({ show: false, message: '', type: '' });
 
-  useEffect(() => {
+  
+useEffect(() => {
     setIsLoaded(true);
     window.scrollTo(0, 0);
   }, []);
@@ -106,8 +107,11 @@ function ItemRegister({ onClose }) {
                 <p className="text-slate-600 text-sm">Fill in the details below to add a new item to your inventory</p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
-                <div className="space-y-2">
+<form
+  onSubmit={handleSubmit}
+  onKeyDown={handleEnterNavigation}
+  className="space-y-4 relative z-10"
+>                <div className="space-y-2">
                   <label htmlFor="itemname" className="block text-slate-700 font-semibold text-sm">
                     Item Name
                   </label>

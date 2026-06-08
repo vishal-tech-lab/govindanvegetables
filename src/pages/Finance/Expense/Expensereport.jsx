@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent } from '../../../components/ui/card';
 import instances from '../../../components/axios';
+import { handleEnterNavigation } from '../../../utils/formNavigation';
 import ReportPreviewModal from '../../../components/report/ReportPreviewModal';
 import ReportLayout from '../../../components/report/ReportLayout';
 

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar, Users, Eye, Receipt, Leaf, Hash, Filter, Search, X,
 } from "lucide-react";
+import { handleEnterNavigation } from "../../../utils/formNavigation";
 
 function Salesreport() {
   const [Allsales, setAllsales] = useState([]);
@@ -153,6 +154,7 @@ function Salesreport() {
             </button>
           </div>
 
+          <form onKeyDown={handleEnterNavigation}>
           <div className="px-4 py-3 grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Date Range */}
             <div>
@@ -230,6 +232,7 @@ function Salesreport() {
               </div>
             </div>
           </div>
+          </form>
 
           {showSpinner && (
             <div className="absolute inset-0 bg-white/60 backdrop-blur-sm rounded-2xl flex items-center justify-center z-20">

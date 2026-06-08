@@ -45,7 +45,7 @@ export const downloadTamilPDF = (data) => {
         layout: "lightHorizontalLines",
       },
     ],
-    defaultStyle: { font: "NotoSansTamil", fontSize: 11 },
+    defaultStyle: { font: " ", fontSize: 11 },
     styles: {
       header: { fontSize: 16 },
       tableHeader: { fontSize: 12 },

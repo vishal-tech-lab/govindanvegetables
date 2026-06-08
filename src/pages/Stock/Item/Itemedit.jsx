@@ -19,6 +19,7 @@ import DeleteModal from "../../../components/DeleteModal";
 
 function Itemedit() {
   const [item, setItem] = useState([]);
+  const [allItems, setAllItems] = useState([]); // Store original items for search
   const [selectedId, setSelectedId] = useState(null);
   const [newitemname, setNewitemname] = useState("");
   const [popup, setPopup] = useState(null);
@@ -55,8 +56,10 @@ function Itemedit() {
     instances
       .get("/item/items")
       .then((response) => {
-        // ✅ Apply Tamil alphabetical sorting
-        setItem(sortTamilAlphabetically(response.data));
+        const originalItems = response.data || [];
+        const sortedItems = sortTamilAlphabetically(originalItems);
+        setItem(sortedItems);
+        setAllItems(originalItems);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -65,19 +68,19 @@ function Itemedit() {
       });
   };
 
-  // ✅ Keep your original search function that calls API with sorting
+  // ✅ Client-side search function - filters from full item list
   const searchItems = (query) => {
     if (!query.trim()) {
-      fetchItems();
+      setItem(sortTamilAlphabetically(allItems));
       return;
     }
-    instances
-      .get(`/item/search?query=${query}`)
-      .then((response) => {
-        // ✅ Apply Tamil alphabetical sorting to search results
-        setItem(sortTamilAlphabetically(response.data));
-      })
-      .catch((error) => console.error(error));
+
+    const searchQuery = query.toLowerCase().trim();
+    const filtered = allItems.filter((i) =>
+      i.itemname?.toLowerCase().includes(searchQuery)
+    );
+
+    setItem(sortTamilAlphabetically(filtered));
   };
 
   useEffect(() => {

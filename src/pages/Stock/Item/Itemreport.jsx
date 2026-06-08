@@ -14,6 +14,7 @@ import {
   Boxes
 } from 'lucide-react';
 import instances from '../../../components/axios';
+import { handleEnterNavigation } from '../../../utils/formNavigation';
 import ReportPreviewModal from '../../../components/report/ReportPreviewModal';
 import ReportLayout from '../../../components/report/ReportLayout';
 
@@ -24,6 +25,8 @@ function Itemreport() {
   const [isLoading, setIsLoading] = useState(true);
   const [openPreview, setOpenPreview] = useState(false);
   const reportRef = useRef(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimeout = useRef(null);
 
   // ✅ Tamil alphabetical sorting function
   const sortTamilAlphabetically = (items) => {
@@ -55,18 +58,33 @@ function Itemreport() {
       });
   }, []);
 
-  // Filter items based on search
-  useEffect(() => {
-    if (searchTerm) {
-      const filtered = totalItems.filter(item =>
-        item.itemname?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      // ✅ Apply Tamil alphabetical sorting to filtered results
-      setFilteredItems(sortTamilAlphabetically(filtered));
-    } else {
+  // Search items (debounced) - queries backend which handles Tanglish→Tamil
+  const searchItems = async (query) => {
+    const q = (query || "").trim();
+    if (!q) {
       setFilteredItems(totalItems);
+      setIsSearching(false);
+      return;
     }
-  }, [searchTerm, totalItems]);
+
+    setIsSearching(true);
+    try {
+      const res = await instances.get(`/item/search?query=${encodeURIComponent(q)}`);
+      const items = Array.isArray(res.data) ? res.data : [];
+      setFilteredItems(sortTamilAlphabetically(items));
+      console.log("Search results for", q, items);
+    } catch (error) {
+      console.error("Search failed", error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    };
+  }, []);
 
   // Stats calculations
   const totalItemCount = filteredItems.length;
@@ -170,15 +188,34 @@ function Itemreport() {
                 Item Inventory ({filteredItems.length} items - Tamil A-Z Order)
               </h3>
 
-              <motion.button 
-                whileHover={{ scale: 1.05 }} 
-                whileTap={{ scale: 0.95 }} 
-                onClick={() => setOpenPreview(true)} 
-                className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg flex items-center space-x-2 text-sm"
-              >
-                <Eye className="w-4 h-4" />
-                <span>Preview Report</span>
-              </motion.button>
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <Search className="w-4 h-4 text-green-500 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      if (searchTimeout.current) clearTimeout(searchTimeout.current);
+                      searchTimeout.current = setTimeout(() => searchItems(e.target.value), 300);
+                    }}
+                    onKeyDown={handleEnterNavigation}
+                    placeholder="Search items (Tanglish → Tamil)"
+                    className="pl-10 pr-3 py-2 rounded-md border bg-white/90 text-sm"
+                  />
+                </div>
+                {isSearching && <div className="text-sm text-slate-500">Searching...</div>}
+
+                <motion.button 
+                  whileHover={{ scale: 1.05 }} 
+                  whileTap={{ scale: 0.95 }} 
+                  onClick={() => setOpenPreview(true)} 
+                  className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg flex items-center space-x-2 text-sm"
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>Preview Report</span>
+                </motion.button>
+              </div>
             </div>
           </div>
 
